@@ -17,9 +17,7 @@ export default class Main extends React.Component {
   }
 
   submitCreateTask() {
-    if (!this.state.taskName) {
-      return
-    }
+    if (!this.state.taskName) return
 
     this.setState({ loading: true })
     fetch(`https://zone-web.herokuapp.com/api/tasks`, {
@@ -28,16 +26,14 @@ export default class Main extends React.Component {
       body: JSON.stringify({ api_token: this.state.apiToken, task: { name: this.state.taskName } })
     })
     .then(response => response.json())
-    .then(json => {
-      this.setState({ tasks: this.state.tasks.concat(json), taskName: '', loading: false })
-    })
+    .then(json => { this.setState({ tasks: this.state.tasks.concat(json), taskName: '', loading: false }) })
     .catch((error) => console.error(error));
   }
 
   changeFinished(item) {
     item.finished = !item.finished
-
     this.setState({ loading: true })
+
     fetch(`https://zone-web.herokuapp.com/api/tasks/${item.id}`, {
       method: 'PATCH',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -48,18 +44,12 @@ export default class Main extends React.Component {
   }
 
   createTaskButton() {
-    if (this.state.loading) {
-      return <ActivityIndicator size="small" />
-    }
-    else {
-      return <Button title="作成" onPress={() => {this.submitCreateTask()}} />
-    }
+    if (this.state.loading) return <ActivityIndicator size="small" />
+    else return <Button title="作成" onPress={() => {this.submitCreateTask()}} />
   }
 
   renderTasks() {
-    if (this.state.loading) {
-      return <FlatList />
-    }
+    if (this.state.loading) return <FlatList />
     else {
       return(
         <FlatList
@@ -95,10 +85,7 @@ export default class Main extends React.Component {
         {this.renderTasks()}
 
         <View style={styles.logout}>
-          <Button
-            title="ログアウト"
-            onPress={() => {this.logout()}}>
-          </Button>
+          <Button title="ログアウト" onPress={() => {this.logout()}} />
         </View>
       </View>
     );
@@ -106,9 +93,7 @@ export default class Main extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  form: {
-    margin: 40
-  },
+  form: { margin: 40 },
   textInput: {
     height: 60,
     width: 300,
@@ -117,7 +102,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
   },
-  logout: {
-    marginBottom: 20
-  }
+  logout: { marginBottom: 20 }
 });
